@@ -1,0 +1,327 @@
+openapi: 3.0.0
+info:
+  version: "0.5"
+  title: Insurance Service
+
+servers:
+  - url: http://localhost:5000
+    description: Dev
+
+paths:
+  /api/v1/insurance/customer/details:
+    post:
+      summary: Create Personal Details
+      description: ''
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PersonalDetails"
+              
+      
+      responses:
+        "202":
+          description: Request accepted
+        "500":
+          description: >
+            **Causes:**
+              * Downstream system(s) is down.
+              * Unhandled exceptions.
+  /api/v1/insurance/communication/details:
+    post:
+      summary: Create Communication Details
+      description: ''
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CommunicationDetails"
+              
+      
+      responses:
+        "202":
+          description: Request accepted
+        "500":
+          description: >
+            **Causes:**
+              * Downstream system(s) is down.
+              * Unhandled exceptions.
+  
+  /api/v1/insurance/kyc/details:
+    post:
+      summary: Create KYC Details
+      description: ''
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/KycDetails"
+      responses:
+        "202":
+          description: Request accepted
+        "500":
+          description: >
+            **Causes:**
+              * Downstream system(s) is down.
+              * Unhandled exceptions.
+  /api/v1/insurance/occupation/details:
+    post:
+      summary: Create Occupation Details
+      description: ''
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OccupationDetails"
+      responses:
+        "202":
+          description: Request accepted
+        "500":
+          description: >
+            **Causes:**
+              * Downstream system(s) is down.
+              * Unhandled exceptions.
+  /api/v1/insurance/medical/details:
+    post:
+      summary: Create Medical Details
+      description: ''
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MedicalDetails"
+      responses:
+        "202":
+          description: Request accepted
+        "500":
+          description: >
+            **Causes:**
+              * Downstream system(s) is down.
+              * Unhandled exceptions.
+  /api/v1/insurance/previous/details:
+    post:
+      summary: Create Previous Details
+      description: ''
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PreviousDetails"
+      responses:
+        "202":
+          description: Request accepted
+        "500":
+          description: >
+            **Causes:**
+              * Downstream system(s) is down.
+              * Unhandled exceptions.
+  /api/v1/insurance/bank/details:
+    post:
+      summary: Create Bank Details
+      description: ''
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BankDetails"
+      responses:
+        "202":
+          description: Request accepted
+        "500":
+          description: >
+            **Causes:**
+              * Downstream system(s) is down.
+              * Unhandled exceptions.
+  /api/v1/insurance/family/details:
+    post:
+      summary: Create Family Details
+      description: ''
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FamilyDetails"
+      responses:
+        "202":
+          description: Request accepted
+        "500":
+          description: >
+            **Causes:**
+              * Downstream system(s) is down.
+              * Unhandled exceptions.
+  
+
+
+components:
+  schemas:
+    PersonalDetails:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        fullName:
+          type: string
+        phoneNumber:
+          type: string
+          format: "+918918819911"
+        fatherName:
+          type: string
+        motherName:
+          type: string
+        gender:
+          type: string
+        maritialStatus:
+          type: string
+        dob:
+          type: string
+        age:
+          type: string
+        ageProof:
+          type: string
+        placeOfBirth:
+          type: string
+        residentialStatus:
+          type: string
+        citizenship:
+          type: string
+    
+    CommunicationDetails:
+      type: object
+      properties:
+        personalId:
+          type: string
+          format: uuid
+        alternatePhoneNumber:
+          type: string
+        email:
+          type: string
+        permanentAddress:
+          type: string
+        presentAddress:
+          type: string
+    KycDetails:
+      type: object
+      properties:
+        personalId:
+          type: string
+          format: uuid
+        tax:
+          type: string
+        panNumber:
+          type: string
+        adharNumber:
+          type: string
+        proofIdentity:
+          type: string
+        addressProof:
+          type: string
+        gstAct:
+          type: string
+    OccupationDetails:
+      type: object
+      properties:
+        personalId:
+          type: string
+          format: uuid
+        presentOccupation:
+          type: string
+        natureOfDuty:
+          type: string
+        presentEmployer:
+          type: string
+        serviceLength:
+          type: number
+        annualIncome:
+          type: number
+        sourceOfIncome:
+          type: string
+        educationalQualification:
+          type: string
+        purposeOfInsurance:
+          type: string
+        armedForceEmployed:
+          type: boolean
+    MedicalDetails:
+      type: object
+      properties:
+        personalId:
+          type: string
+          format: uuid
+        alcohilicDrink:
+          type: boolean
+        narcotics:
+          type: boolean
+        smokeConsume:
+          type: boolean
+        stateOfHealth:
+          type: string
+          format: 'Good'
+        anyOperation:
+          type: boolean
+        height:
+          type: number
+        weights:
+          type: number
+        identificationMark:
+          type: boolean
+    PreviousDetails:
+      type: object
+      properties:
+        personalId:
+          type: string
+          format: uuid
+        prevPolicyNumber:
+          type: string
+        plan:
+          type: string
+        permiumPayingTerm:
+          type: string
+        sumAssured:
+          type: number
+    BankDetails:
+      type: object
+      properties:
+        personalId:
+          type: string
+          format: uuid
+        accountType:
+          type: string
+        accountNumber:
+          type: number
+        ifsc:
+          type: string
+        bankName:
+          type: string
+    FamilyDetails:
+      type: object
+      properties:
+        personalId:
+          type: string
+          format: uuid
+        fatherAge:
+          type: number
+        fatherLiving:
+          type: boolean
+        motherAge:
+          type: number
+        motherLiving:
+          type: boolean
+        brotherAge:
+          type: number
+        brotherLiving:
+          type: boolean
+        sisterAge:
+          type: number
+        sisterLiving:
+          type: boolean
+
+    
