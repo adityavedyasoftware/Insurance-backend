@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS communication_details (
     personal_id uuid REFERENCES Personal_Details(id),
     alternate_phone_number varchar(255),
     email varchar(255),
-    permanent_address varchar(255),
+    permanent_address json,
     present_address varchar(255)
 
 );

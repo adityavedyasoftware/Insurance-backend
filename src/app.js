@@ -3,6 +3,7 @@ const express = require('express');
 const app = express();
 
 const cors = require('cors')
+app.use(cors());
 const bodyParser = require('body-parser');
 const fs = require('fs');
 const path = require('path');
@@ -45,10 +46,13 @@ app.use(
     }),
 );
 
-app.use(cors());
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use('/api/v1/insurance',require('./router/index').router)
+app.use('/api/v1/insurance',require('./router/fetch-insurance-customer-details').router)
+app.use('/api/v1/insurance',require('./router/update-insurance-customer-details').router)
+
 app.get('/',(req,res)=>{
     res.send('Hello')
 })

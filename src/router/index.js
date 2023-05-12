@@ -1,5 +1,5 @@
 let Express = require('express');
-const { createCustomerDetails, getAllCustomerDetails, getCustomerDetailsById, createCommunicationDetails, createKycDetails, createOccupationDetails, createMedicalDetails, createBankDetails, createFamilyDetails } = require('../controller/insurance-customer');
+const { createCustomerDetails, getAllCustomerDetails, createCommunicationDetails, createKycDetails, createOccupationDetails, createMedicalDetails, createBankDetails, createFamilyDetails, createPreviousDetails, getPersonalDetailsById } = require('../controller/insurance-customer');
 const { createSqlDb } = require('../middleware/dbCreation');
 
 let router = Express.Router();
@@ -12,8 +12,8 @@ router.get('/customers',
 getAllCustomerDetails
 )
 
-router.get('/customer/details/:id',
-getCustomerDetailsById
+router.get('/personal/details/:id',
+getPersonalDetailsById
 )
 
 router.post('/communication/details',
@@ -34,6 +34,10 @@ createOccupationDetails
 router.post('/medical/details',
 createSqlDb,
 createMedicalDetails
+)
+router.post('/previous/details',
+createSqlDb,
+createPreviousDetails
 )
 router.post('/bank/details',
 createSqlDb,

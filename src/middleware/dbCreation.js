@@ -1,5 +1,5 @@
 
-const udw = require('../utils/db-wrapper');
+const udw = require('../db/utils/db-wrapper');
 const db = udw.DB
 const PGP = udw.PGP
 const dbSQLConfig = require('../db/index');

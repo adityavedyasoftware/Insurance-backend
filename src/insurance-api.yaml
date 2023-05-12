@@ -157,10 +157,225 @@ paths:
             **Causes:**
               * Downstream system(s) is down.
               * Unhandled exceptions.
+  /api/v1/insurance/customer/all/details/{id}:
+    get:
+      summary: Fetch all details of Customer.
+      description: ''
+      parameters:
+        - $ref: "#/components/parameters/Personal-ID"
+      responses:
+        "200":
+          description: Request exists, data provided
+        "404":
+          description: Request does not exist
+  /api/v1/insurance/all/customer/details:
+    get:
+      summary: Fetch all the insurance detials of Customer.
+      description: ''
+      responses:
+        "200":
+          description: Request exists, data provided
+        "404":
+          description: Request does not exist
+  /api/v1/insurance/personal/details/{id}:
+    get:
+      summary: Fetch Personal details of Customer.
+      description: ''
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Personal Id of the customer.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Request exists, data provided
+        "404":
+          description: Request does not exist
   
+  /api/v1/insurance/customer/{type}/detail/{id}:
+    get:
+      summary: Fetch Personal details of Customer.
+      description: ''
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Personal Id of the customer.
+          schema:
+            type: string
+        - in: path
+          name: type
+          required: true
+          description: Type of detail required for customer.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Request exists, data provided
+        "404":
+          description: Request does not exist
 
+  /api/v1/insurance/customer/update/personal:
+    put:
+      summary: Update Personal Details
+      description: ''
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PersonalDetails"
+      responses:
+        "202":
+          description: Request accepted
+        "500":
+          description: >
+            **Causes:**
+              * Downstream system(s) is down.
+              * Unhandled exceptions.
+
+  /api/v1/insurance/customer/update/communication:
+    put:
+      summary: Update Communication Details
+      description: ''
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateCommunicationDetails"
+      responses:
+        "202":
+          description: Request accepted
+        "500":
+          description: >
+            **Causes:**
+              * Downstream system(s) is down.
+              * Unhandled exceptions.
+
+  /api/v1/insurance/customer/update/kyc:
+    put:
+      summary: Update KYC Details
+      description: ''
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateKycDetails"
+      responses:
+        "202":
+          description: Request accepted
+        "500":
+          description: >
+            **Causes:**
+              * Downstream system(s) is down.
+              * Unhandled exceptions.
+
+  /api/v1/insurance/customer/update/occupation:
+    put:
+      summary: Update occupation Details
+      description: ''
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateOccupationDetails"
+      responses:
+        "202":
+          description: Request accepted
+        "500":
+          description: >
+            **Causes:**
+              * Downstream system(s) is down.
+              * Unhandled exceptions.
+
+  /api/v1/insurance/customer/update/medical:
+    put:
+      summary: Update Bank Details
+      description: ''
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateMedicalDetails"
+      responses:
+        "202":
+          description: Request accepted
+        "500":
+          description: >
+            **Causes:**
+              * Downstream system(s) is down.
+              * Unhandled exceptions.
+  
+  /api/v1/insurance/customer/update/previous:
+    put:
+      summary: Update Previous Details
+      description: ''
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdatePreviousDetails"
+      responses:
+        "202":
+          description: Request accepted
+        "500":
+          description: >
+            **Causes:**
+              * Downstream system(s) is down.
+              * Unhandled exceptions.
+  /api/v1/insurance/customer/update/bank:
+    put:
+      summary: Update Bank Details
+      description: ''
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateBankDetails"
+      responses:
+        "202":
+          description: Request accepted
+        "500":
+          description: >
+            **Causes:**
+              * Downstream system(s) is down.
+              * Unhandled exceptions.
+  /api/v1/insurance/customer/update/family:
+    put:
+      summary: Update Family Details
+      description: ''
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateFamilyDetails"
+      responses:
+        "202":
+          description: Request accepted
+        "500":
+          description: >
+            **Causes:**
+              * Downstream system(s) is down.
+              * Unhandled exceptions.
 
 components:
+  parameters:
+    Personal-ID:
+      in: path
+      name: id
+      required: true
+      description: User Id of the customer.
+      schema:
+        type: string
   schemas:
     PersonalDetails:
       type: object
@@ -168,28 +383,28 @@ components:
         id:
           type: string
           format: uuid
-        fullName:
+        full_name:
           type: string
-        phoneNumber:
+        phone_number:
           type: string
           format: "+918918819911"
-        fatherName:
+        father_name:
           type: string
-        motherName:
+        mother_name:
           type: string
         gender:
           type: string
-        maritialStatus:
+        maritial_status:
           type: string
         dob:
           type: string
         age:
           type: string
-        ageProof:
+        age_proof:
           type: string
-        placeOfBirth:
+        place_of_birth:
           type: string
-        residentialStatus:
+        residential_status:
           type: string
         citizenship:
           type: string
@@ -205,9 +420,26 @@ components:
         email:
           type: string
         permanentAddress:
-          type: string
+          type: object
         presentAddress:
+          type: object
+    UpdateCommunicationDetails:
+      type: object
+      properties:
+        commId:
           type: string
+          format: uuid
+        personalId:
+          type: string
+          format: uuid
+        alternatePhoneNumber:
+          type: string
+        email:
+          type: string
+        permanentAddress:
+          type: object
+        presentAddress:
+          type: object
     KycDetails:
       type: object
       properties:
@@ -226,9 +458,57 @@ components:
           type: string
         gstAct:
           type: string
+    UpdateKycDetails:
+      type: object
+      properties:
+        kycId:
+          type: string
+          format: uuid
+        personalId:
+          type: string
+          format: uuid
+        tax:
+          type: string
+        panNumber:
+          type: string
+        adharNumber:
+          type: string
+        proofIdentity:
+          type: string
+        addressProof:
+          type: string
+        gstAct:
+          type: string
     OccupationDetails:
       type: object
       properties:
+        personalId:
+          type: string
+          format: uuid
+        presentOccupation:
+          type: string
+        natureOfDuty:
+          type: string
+        presentEmployer:
+          type: string
+        serviceLength:
+          type: number
+        annualIncome:
+          type: number
+        sourceOfIncome:
+          type: string
+        educationalQualification:
+          type: string
+        purposeOfInsurance:
+          type: string
+        armedForceEmployed:
+          type: boolean
+    UpdateOccupationDetails:
+      type: object
+      properties:
+        occupId:
+          type: string
+          format: uuid
         personalId:
           type: string
           format: uuid
@@ -273,6 +553,32 @@ components:
           type: number
         identificationMark:
           type: boolean
+    UpdateMedicalDetails:
+      type: object
+      properties:
+        medId: 
+          type: string
+          format: uuid
+        personalId:
+          type: string
+          format: uuid
+        alcohilicDrink:
+          type: boolean
+        narcotics:
+          type: boolean
+        smokeConsume:
+          type: boolean
+        stateOfHealth:
+          type: string
+          format: 'Good'
+        anyOperation:
+          type: boolean
+        height:
+          type: number
+        weights:
+          type: number
+        identificationMark:
+          type: boolean
     PreviousDetails:
       type: object
       properties:
@@ -287,7 +593,38 @@ components:
           type: string
         sumAssured:
           type: number
+    UpdatePreviousDetails:
+      type: object
+      properties:
+        prevId:
+          type: string
+          format: uuid
+        personalId:
+          type: string
+          format: uuid
+        prevPolicyNumber:
+          type: string
+        plan:
+          type: string
+        permiumPayingTerm:
+          type: string
+        sumAssured:
+          type: number
     BankDetails:
+      type: object
+      properties:
+        personalId:
+          type: string
+          format: uuid
+        accountType:
+          type: string
+        accountNumber:
+          type: number
+        ifsc:
+          type: string
+        bankName:
+          type: string
+    UpdateBankDetails:
       type: object
       properties:
         personalId:
@@ -323,5 +660,29 @@ components:
           type: number
         sisterLiving:
           type: boolean
-
+    UpdateFamilyDetails:
+      type: object
+      properties:
+        personalId:
+          type: string
+          format: uuid
+        famId:
+          type: string
+          format: uuid
+        fatherAge:
+          type: number
+        fatherLiving:
+          type: boolean
+        motherAge:
+          type: number
+        motherLiving:
+          type: boolean
+        brotherAge:
+          type: number
+        brotherLiving:
+          type: boolean
+        sisterAge:
+          type: number
+        sisterLiving:
+          type: boolean
     

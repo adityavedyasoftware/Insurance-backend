@@ -1,5 +1,5 @@
 var path = require('path');
-const { PGP } = require('../utils/db-wrapper');
+const { PGP } = require('./utils/db-wrapper');
 
 function sql(file) {
     const fullPath = path.join(__dirname, file); // generating full path;
@@ -10,5 +10,9 @@ function sql(file) {
 module.exports = {
     user: {
         add: sql('./generations/createtable.sql')
+    },
+    query: {
+        getAllDetailById: sql('./generations/query.sql'),
+        getAllInsuranceDetails: sql('./generations/getAllInsuranceDetailsQuery.sql')
     }
 }

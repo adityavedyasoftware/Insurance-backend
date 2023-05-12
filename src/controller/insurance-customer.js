@@ -1,26 +1,26 @@
 const { uuid } = require("uuidv4")
-const udw = require('../utils/db-wrapper')
+const dbManager = require("../db/utils/db-manager")
+const udw = require('../db/utils/db-wrapper')
 const PGP = udw.PGP
 const db = udw.DB
-var getTableName = function (table, schema_id) {
-    return new PGP.helpers.TableName({ table: table, schema: schema_id });
-};
+
 module.exports.createCustomerDetails = async (req, res) => {
+    console.log(req.body)
     const {
-        fullName,
-        phoneNumber,
-        fatherName,
-        motherName,
+        full_name,
+        phone_number,
+        father_name,
+        mother_name,
         gender,
-        maritialStatus,
+        maritial_status,
         dob,
         age,
-        ageProof,
-        placeOfBirth,
-        residentialStatus,
+        age_proof,
+        place_of_birth,
+        residential_status,
         citizenship
-
     } = req.body
+
     let uid = uuid()
 
     let columnSet = new PGP.helpers.ColumnSet([
@@ -82,28 +82,32 @@ module.exports.createCustomerDetails = async (req, res) => {
 
     let customerDetails = {
         id: uid,
-        full_name: fullName,
-        phone_number: phoneNumber,
-        father_name: fatherName,
-        mother_name: motherName,
-        gender: gender,
-        maritial_status: maritialStatus,
-        dob: dob,
-        age: age,
-        age_proof: ageProof,
-        place_of_birth: placeOfBirth,
-        residential_status: residentialStatus,
-        citizenship: citizenship
+        full_name,
+        phone_number,
+        father_name,
+        mother_name,
+        gender,
+        maritial_status,
+        dob,
+        age,
+        age_proof,
+        place_of_birth,
+        residential_status,
+        citizenship
 
     }
 
     const query = PGP.helpers.insert(customerDetails, columnSet)
-
+    // const returningQuery = query + ' RETURNING id'
     console.log(query)
     try {
-        const result = await db.none(query)
+        const result = await dbManager.executeInsertUpdateQueryExpectingId(query)
         console.log(result)
-        return res.status(200).send('Success')
+        return res.status(200).send({
+            id: result,
+            msg: 'Success'
+        })
+
     } catch (error) {
         return res.status(500).send(error)
     }
@@ -111,31 +115,32 @@ module.exports.createCustomerDetails = async (req, res) => {
 }
 
 module.exports.getAllCustomerDetails = async (req, res) => {
-    let tableName = getTableName('personal_details','public')
+    let tableName = dbManager.getTableName('personal_details', 'public')
     try {
         const query = 'SELECT * FROM $1'
-        const result = await db.any(query,tableName)
+        const result = await db.any(query, tableName)
         return res.status(200).send(result)
     } catch (error) {
         return res.status(500).send(error)
     }
 }
 
-module.exports.getCustomerDetailsById = async (req, res) => {
-    let tableName = getTableName('personal_details','public')
+module.exports.getPersonalDetailsById = async (req, res) => {
+
+    let tableName = dbManager.getTableName('personal_details', 'public')
     let id = req.params.id
 
     try {
         const query = 'SELECT * FROM $1 WHERE id=$2'
-        const result = await db.query(query,[tableName,id])
+        const result = await db.query(query, [tableName, id])
         console.log(query)
-        return res.status(200).send(result)
+        return res.status(200).send(result[0])
     } catch (error) {
         return res.status(500).send(error)
     }
 }
 
-module.exports.createCommunicationDetails = async (req,res) => {
+module.exports.createCommunicationDetails = async (req, res) => {
     const {
         personalId,
         alternatePhoneNumber,
@@ -153,11 +158,11 @@ module.exports.createCommunicationDetails = async (req,res) => {
         alternate_phone_number: alternatePhoneNumber,
         email,
         permanent_address: permanentAddress,
-       present_address: presentAddress
+        present_address: presentAddress
     }
     const columnSet = new PGP.helpers.ColumnSet(Object.keys(communicationDetails), { table: 'communication_details' })
 
-    const query = PGP.helpers.insert(communicationDetails,columnSet)
+    const query = PGP.helpers.insert(communicationDetails, columnSet)
     console.log(query);
     try {
         const result = await db.none(query)
@@ -166,9 +171,9 @@ module.exports.createCommunicationDetails = async (req,res) => {
     } catch (error) {
         return res.status(500).send(error)
     }
-} 
+}
 
-module.exports.createKycDetails = async (req,res) => {
+module.exports.createKycDetails = async (req, res) => {
     const {
         personalId,
         tax,
@@ -186,7 +191,7 @@ module.exports.createKycDetails = async (req,res) => {
         kyc_id: id,
         personal_id: personalId,
         tax,
-        pan_number:panNumber,
+        pan_number: panNumber,
         aadhar_number: aadharNumber,
         proof_identity: proofIdentity,
         address_proof: addressProof,
@@ -194,7 +199,7 @@ module.exports.createKycDetails = async (req,res) => {
     }
     const columnSet = new PGP.helpers.ColumnSet(Object.keys(kycDetails), { table: 'kyc_details' })
 
-    const query = PGP.helpers.insert(kycDetails,columnSet)
+    const query = PGP.helpers.insert(kycDetails, columnSet)
     console.log(query);
     try {
         const result = await db.none(query)
@@ -205,7 +210,7 @@ module.exports.createKycDetails = async (req,res) => {
     }
 }
 
-module.exports.createOccupationDetails = async (req,res) => {
+module.exports.createOccupationDetails = async (req, res) => {
     const {
         personalId,
         presentOccupation,
@@ -236,7 +241,7 @@ module.exports.createOccupationDetails = async (req,res) => {
     }
     const columnSet = new PGP.helpers.ColumnSet(Object.keys(occupationDetails), { table: 'occupation_details' })
 
-    const query = PGP.helpers.insert(occupationDetails,columnSet)
+    const query = PGP.helpers.insert(occupationDetails, columnSet)
     console.log(query);
     try {
         const result = await db.none(query)
@@ -247,7 +252,7 @@ module.exports.createOccupationDetails = async (req,res) => {
     }
 }
 
-module.exports.createMedicalDetails = async (req,res) => {
+module.exports.createMedicalDetails = async (req, res) => {
     const {
         personalId,
         alcohilicDrink,
@@ -276,7 +281,7 @@ module.exports.createMedicalDetails = async (req,res) => {
     }
     const columnSet = new PGP.helpers.ColumnSet(Object.keys(medicalDetails), { table: 'medical_details' })
 
-    const query = PGP.helpers.insert(medicalDetails,columnSet)
+    const query = PGP.helpers.insert(medicalDetails, columnSet)
     console.log(query);
     try {
         const result = await db.none(query)
@@ -287,7 +292,7 @@ module.exports.createMedicalDetails = async (req,res) => {
     }
 }
 
-module.exports.createPreviousDetails = async (req,res) => {
+module.exports.createPreviousDetails = async (req, res) => {
     const {
         personalId,
         prevPolicyNumber,
@@ -308,7 +313,7 @@ module.exports.createPreviousDetails = async (req,res) => {
     }
     const columnSet = new PGP.helpers.ColumnSet(Object.keys(previousDetails), { table: 'previous_details' })
 
-    const query = PGP.helpers.insert(medicalDetails,columnSet)
+    const query = PGP.helpers.insert(previousDetails, columnSet)
     console.log(query);
     try {
         const result = await db.none(query)
@@ -319,7 +324,7 @@ module.exports.createPreviousDetails = async (req,res) => {
     }
 }
 
-module.exports.createBankDetails = async (req,res) => {
+module.exports.createBankDetails = async (req, res) => {
     const {
         personalId,
         accountType,
@@ -338,7 +343,7 @@ module.exports.createBankDetails = async (req,res) => {
     }
     const columnSet = new PGP.helpers.ColumnSet(Object.keys(bankDetails), { table: 'bank_details' })
 
-    const query = PGP.helpers.insert(bankDetails,columnSet)
+    const query = PGP.helpers.insert(bankDetails, columnSet)
     console.log(query);
     try {
         const result = await db.none(query)
@@ -349,7 +354,7 @@ module.exports.createBankDetails = async (req,res) => {
     }
 }
 
-module.exports.createFamilyDetails = async (req,res) => {
+module.exports.createFamilyDetails = async (req, res) => {
     const {
         personalId,
         fatherAge,
@@ -377,7 +382,7 @@ module.exports.createFamilyDetails = async (req,res) => {
     }
     const columnSet = new PGP.helpers.ColumnSet(Object.keys(familyDetails), { table: 'family_details' })
 
-    const query = PGP.helpers.insert(familyDetails,columnSet)
+    const query = PGP.helpers.insert(familyDetails, columnSet)
     console.log(query);
     try {
         const result = await db.none(query)
